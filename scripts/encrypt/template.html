@@ -1,0 +1,124 @@
+<!doctype html>
+<html class="staticrypt-html">
+  <head>
+    <meta charset="utf-8" />
+    <title>Ecology Skincare — Daily Dashboard</title> <!-- BRAND-TOKEN: pageTitle -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <!-- BRAND-TOKEN: fontLinks -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet" />
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      :root {
+        --black: #222222;
+        --accent: #FF7D21;       /* BRAND-TOKEN: accent */
+        --accent-hover: #D35700; /* BRAND-TOKEN: accentHover */
+        --bg: #FFF8F1;            /* BRAND-TOKEN: bg */
+        --text: #222222;          /* BRAND-TOKEN: text */
+        --text-muted: #888888;    /* BRAND-TOKEN: textMuted */
+        --border: #EBD9CB;        /* BRAND-TOKEN: border */
+        --grey-light: #FFF8F1;
+        --font: 'Lato', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* BRAND-TOKEN: font */
+      }
+      html, body { height: 100%; }
+      body { background-color: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; }
+      .staticrypt-spinner-container { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: var(--bg); z-index: 10; }
+      .staticrypt-spinner { width: 2rem; height: 2rem; border: 3px solid var(--border); border-right-color: var(--accent); border-radius: 50%; animation: spin 0.75s linear infinite; }
+      @keyframes spin { 100% { transform: rotate(360deg); } }
+      .staticrypt-content { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 40px 24px; gap: 40px; }
+      .logo { display: flex; flex-direction: column; align-items: center; gap: 10px; user-select: none; }
+      .logo-word { font-size: 22px; font-weight: 900; letter-spacing: 0.04em; color: var(--text); text-transform: none; }
+      .logo-word span { color: var(--accent); }
+      .logo-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); }
+      .card { width: 100%; max-width: 420px; background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 40px; display: flex; flex-direction: column; gap: 28px; }
+      .card-header { text-align: center; display: flex; flex-direction: column; gap: 8px; }
+      .card-label { font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+      .card-subtitle { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+      #staticrypt-form { display: flex; flex-direction: column; gap: 16px; }
+      .staticrypt-password-container { position: relative; }
+      #staticrypt-password { width: 100%; background: var(--grey-light); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-family: var(--font); font-size: 15px; padding: 13px 44px 13px 16px; outline: none; transition: border-color 0.15s; -webkit-appearance: none; }
+      #staticrypt-password::placeholder { color: var(--text-muted); opacity: 0.7; }
+      #staticrypt-password:focus { border-color: var(--accent); background: #ffffff; }
+      .staticrypt-toggle-password-visibility { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; opacity: 0.35; cursor: pointer; transition: opacity 0.15s; }
+      .staticrypt-toggle-password-visibility:hover { opacity: 0.7; }
+      .staticrypt-decrypt-button { width: 100%; background: var(--accent); color: #ffffff; font-family: var(--font); font-size: 14px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; border: none; border-radius: 40px; padding: 15px 24px; cursor: pointer; transition: background 0.15s; -webkit-appearance: none; }
+      .staticrypt-decrypt-button:hover { background: var(--accent-hover); }
+      .staticrypt-decrypt-button:active { transform: scale(0.99); }
+      label.staticrypt-remember { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+      .staticrypt-remember input[type="checkbox"] { appearance: none; -webkit-appearance: none; width: 14px; height: 14px; border: 1.5px solid var(--border); border-radius: 2px; background: transparent; cursor: pointer; position: relative; flex-shrink: 0; transition: border-color 0.15s, background 0.15s; }
+      .staticrypt-remember input[type="checkbox"]:checked { background: var(--accent); border-color: var(--accent); }
+      .staticrypt-remember input[type="checkbox"]:checked::after { content: ""; position: absolute; top: 1px; left: 4px; width: 4px; height: 7px; border: 2px solid #fff; border-top: none; border-left: none; transform: rotate(45deg); }
+      .remember-label { font-size: 12px; color: var(--text-muted); letter-spacing: 0.03em; }
+      .footer { font-size: 11px; color: var(--text-muted); opacity: 0.6; letter-spacing: 0.08em; text-transform: uppercase; }
+      .hidden { display: none !important; }
+    </style>
+  </head>
+  <body>
+    <div id="staticrypt_loading" class="staticrypt-spinner-container">
+      <div class="staticrypt-spinner"></div>
+    </div>
+    <div id="staticrypt_content" class="staticrypt-content hidden">
+      <!-- BRAND-TOKEN: logo -->
+      <div class="logo">
+        <div class="logo-word">Ecology<span>.</span></div>
+        <div class="logo-tag">Daily Dashboard</div> <!-- BRAND-TOKEN: tagline -->
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-label">Access Required</div>
+          <p class="card-subtitle">Enter the password to view the Ecology daily dashboard.</p> <!-- BRAND-TOKEN: gateSubtitle -->
+        </div>
+        <form id="staticrypt-form" action="#" method="post">
+          <div class="staticrypt-password-container">
+            <input id="staticrypt-password" type="password" name="password" placeholder="Enter password" autofocus />
+            <img class="staticrypt-toggle-password-visibility" alt="Show password" title="Show password" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NDAgNTEyIj48cGF0aCBmaWxsPSIjODg4ODg4IiBkPSJNMzguOCA1LjFDMjguNC0zLjEgMTMuMy0xLjIgNS4xIDkuMlMtMS4yIDM0LjcgOS4yIDQyLjlsNTkyIDQ2NGMxMC40IDguMiAyNS41IDYuMyAzMy43LTQuMXM2LjMtMjUuNS00LjEtMzMuN0w1MjUuNiAzODYuN2MzOS42LTQwLjYgNjYuNC04Ni4xIDc5LjktMTE4LjRjMy4zLTcuOSAzLjMtMTYuNyAwLTI0LjZjLTE0LjktMzUuNy00Ni4yLTg3LjctOTMtMTMxLjFDNDY1LjUgNjguOCA0MDAuOCAzMiAzMjAgMzJjLTY4LjIgMC0xMjUgMjYuMy0xNjkuMyA2MC44TDM4LjggNS4xek0yMjMuMSAxNDkuNUMyNDguNiAxMjYuMiAyODIuNyAxMTIgMzIwIDExMmM3OS41IDAgMTQ0IDY0LjUgMTQ0IDE0NGMwIDI0LjktNi4zIDQ4LjMtMTcuNCA2OC43TDQwOCAyOTQuNWM4LjQtMTkuMyAxMC42LTQxLjQgNC44LTYzLjNjLTExLjEtNDEuNS00Ny44LTY5LjQtODguNi03MS4xYy01LjgtLjItOS4yIDYuMS03LjQgMTEuN2MyLjEgNi40IDMuMyAxMy4yIDMuMyAyMC4zYzAgMTAuMi0yLjQgMTkuOC02LjYgMjguM2wtOTAuMy03MC44ek0zNzMgMzg5LjljLTE2LjQgNi41LTM0LjMgMTAuMS01MyAxMC4xYy03OS41IDAtMTQ0LTY0LjUtMTQ0LTE0NGMwLTYuOSAuNS0xMy42IDEuNC0yMC4yTDgzLjEgMTYxLjVDNjAuMyAxOTEuMiA0NCAyMjAuOCAzNC41IDI0My43Yy0zLjMgNy45LTMuMyAxNi43IDAgMjQuNmMxNC45IDM1LjcgNDYuMiA4Ny43IDkzIDEzMS4xQzE3NC41IDQ0My4yIDIzOS4yIDQ4MCAzMjAgNDgwYzQ3LjggMCA4OS45LTEyLjkgMTI2LjItMzIuNUwzNzMgMzg5Ljl6Ii8+PC9zdmc+" />
+          </div>
+          <label id="staticrypt-remember-label" class="staticrypt-remember hidden">
+            <input id="staticrypt-remember" type="checkbox" name="remember" />
+            <span class="remember-label">Keep me signed in on this device</span>
+          </label>
+          <input type="submit" class="staticrypt-decrypt-button" value="Unlock" />
+        </form>
+      </div>
+      <div class="footer">Ecology Skincare — Confidential</div> <!-- BRAND-TOKEN: footerCopyright -->
+    </div>
+    <script>
+      const staticryptInitiator = /*[|js_staticrypt|]*/ 0;
+      const templateError = "Wrong password.",
+        templateToggleAltShow = "Show password",
+        templateToggleAltHide = "Hide password",
+        isRememberEnabled = /*[|is_remember_enabled|]*/ 0,
+        staticryptConfig = /*[|staticrypt_config|]*/ 0;
+      const templateConfig = { rememberExpirationKey: "staticrypt_expiration", rememberPassphraseKey: "staticrypt_passphrase", replaceHtmlCallback: null, clearLocalStorageCallback: null };
+      const staticrypt = staticryptInitiator.init(staticryptConfig, templateConfig);
+      window.onload = async function () {
+        const { isSuccessful } = await staticrypt.handleDecryptOnLoad();
+        if (!isSuccessful) {
+          document.getElementById("staticrypt_loading").classList.add("hidden");
+          document.getElementById("staticrypt_content").classList.remove("hidden");
+          document.getElementById("staticrypt-password").focus();
+          if (isRememberEnabled) { document.getElementById("staticrypt-remember-label").classList.remove("hidden"); }
+        }
+      };
+      const toggleIcon = document.querySelector(".staticrypt-toggle-password-visibility");
+      const imgSrcEyeClosed = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NDAgNTEyIj48cGF0aCBmaWxsPSIjODg4ODg4IiBkPSJNMzguOCA1LjFDMjguNC0zLjEgMTMuMy0xLjIgNS4xIDkuMlMtMS4yIDM0LjcgOS4yIDQyLjlsNTkyIDQ2NGMxMC40IDguMiAyNS41IDYuMyAzMy43LTQuMXM2LjMtMjUuNS00LjEtMzMuN0w1MjUuNiAzODYuN2MzOS42LTQwLjYgNjYuNC04Ni4xIDc5LjktMTE4LjRjMy4zLTcuOSAzLjMtMTYuNyAwLTI0LjZjLTE0LjktMzUuNy00Ni4yLTg3LjctOTMtMTMxLjFDNDY1LjUgNjguOCA0MDAuOCAzMiAzMjAgMzJjLTY4LjIgMC0xMjUgMjYuMy0xNjkuMyA2MC44TDM4LjggNS4xek0yMjMuMSAxNDkuNUMyNDguNiAxMjYuMiAyODIuNyAxMTIgMzIwIDExMmM3OS41IDAgMTQ0IDY0LjUgMTQ0IDE0NGMwIDI0LjktNi4zIDQ4LjMtMTcuNCA2OC43TDQwOCAyOTQuNWM4LjQtMTkuMyAxMC42LTQxLjQgNC44LTYzLjNjLTExLjEtNDEuNS00Ny44LTY5LjQtODguNi03MS4xYy01LjgtLjItOS4yIDYuMS03LjQgMTEuN2MyLjEgNi40IDMuMyAxMy4yIDMuMyAyMC4zYzAgMTAuMi0yLjQgMTkuOC02LjYgMjguM2wtOTAuMy03MC44ek0zNzMgMzg5LjljLTE2LjQgNi41LTM0LjMgMTAuMS01MyAxMC4xYy03OS41IDAtMTQ0LTY0LjUtMTQ0LTE0NGMwLTYuOSAuNS0xMy42IDEuNC0yMC4yTDgzLjEgMTYxLjVDNjAuMyAxOTEuMiA0NCAyMjAuOCAzNC41IDI0My43Yy0zLjMgNy45LTMuMyAxNi43IDAgMjQuNmMxNC45IDM1LjcgNDYuMiA4Ny43IDkzIDEzMS4xQzE3NC41IDQ0My4yIDIzOS4yIDQ4MCAzMjAgNDgwYzQ3LjggMCA4OS45LTEyLjkgMTI2LjItMzIuNUwzNzMgMzg5Ljl6Ii8+PC9zdmc+";
+      const imgSrcEyeOpened = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1NzYgNTEyIj48cGF0aCBmaWxsPSIjODg4ODg4IiBkPSJNMjg4IDMyYy04MC44IDAtMTQ1LjUgMzYuOC0xOTIuNiA4MC42QzQ4LjYgMTU2IDE3LjMgMjA4IDIuNSAyNDMuN2MtMy4zIDcuOS0zLjMgMTYuNyAwIDI0LjZDMTcuMyAzMDQgNDguNiAzNTYgOTUuNCAzOTkuNEMxNDIuNSA0NDMuMiAyMDcuMiA0ODAgMjg4IDQ4MHMxNDUuNS0zNi44IDE5Mi42LTgwLjZjNDYuOC00My41IDc4LjEtOTUuNCA5My0xMzEuMWMzLjMtNy45IDMuMy0xNi43IDAtMjQuNmMtMTQuOS0zNS43LTQ2LjItODcuNy05My0xMzEuMUM0MzMuNSA2OC44IDM2OC44IDMyIDI4OCAzMnpNMTQ0IDI1NmExNDQgMTQ0IDAgMSAxIDI4OCAwIDE0NCAxNDQgMCAxIDEgLTI4OCAwem0xNDQtNjRjMCAzNS4zLTI4LjcgNjQtNjQgNjRjLTcuMSAwLTEzLjktMS4yLTIwLjMtMy4zYy01LjUtMS44LTExLjkgMS42LTExLjcgNy40Yy4zIDYuOSAxLjMgMTMuOCAzLjIgMjAuN2MxMy43IDUxLjIgNjYuNCA4MS42IDExNy42IDY3LjlzODEuNi02Ni40IDY3LjktMTE3LjZjLTExLjEtNDEuNS00Ny44LTY5LjQtODguNi03MS4xYy01LjgtLjItOS4yIDYuMS03LjQgMTEuN2MyLjEgNi40IDMuMyAxMy4yIDMuMyAyMC4zeiIvPjwvc3ZnPg==";
+      toggleIcon.addEventListener("click", function () {
+        const passwordInput = document.getElementById("staticrypt-password");
+        if (passwordInput.type === "password") { passwordInput.type = "text"; toggleIcon.src = imgSrcEyeOpened; toggleIcon.alt = templateToggleAltHide; toggleIcon.title = templateToggleAltHide; }
+        else { passwordInput.type = "password"; toggleIcon.src = imgSrcEyeClosed; toggleIcon.alt = templateToggleAltShow; toggleIcon.title = templateToggleAltShow; }
+      });
+      document.getElementById("staticrypt-form").addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const password = document.getElementById("staticrypt-password").value,
+          isRememberChecked = document.getElementById("staticrypt-remember").checked;
+        const { isSuccessful } = await staticrypt.handleDecryptionOfPage(password, isRememberChecked);
+        if (!isSuccessful) { alert(templateError); }
+      });
+    </script>
+  </body>
+</html>
