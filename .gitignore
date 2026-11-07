@@ -1,0 +1,12 @@
+.env
+.DS_Store
+node_modules/
+decrypted/
+public-encrypted/
+*.pem
+*.key
+*.p12
+credentials.json
+serviceAccountKey*.json
+*.log
+__pycache__/
