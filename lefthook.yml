@@ -1,0 +1,8 @@
+# Git hooks managed by lefthook
+# Install: brew install lefthook && lefthook install
+
+pre-commit:
+  parallel: true
+  commands:
+    encrypt-public:
+      run: python3 scripts/encrypt/encrypt_public.py --skip-unchanged && (git add $(find public -name "*.html") 2>/dev/null || true)
